@@ -1,0 +1,18 @@
+Delimiter //
+drop procedure IF EXISTS quotePrice//
+CREATE procedure quotePrice(in Id varchar(2), out price int)
+Begin
+
+call qwerty(Id,@val);
+
+set  @machineCost =(select m.consumablesCostPerHour from scheduler_machine as m where
+					m.machineName in (select machineRequested_id from scheduler_ordermodel where scheduler_ordermodel.id=Id));
+
+set @materialCost=(select mt.costPerUnit from scheduler_materials as mt 
+					where mt.materialID in 
+							( select materialID_id from scheduler_machine
+                            where scheduler_machine.machineName in(select machineRequested_id from scheduler_ordermodel where scheduler_ordermodel.id=Id)));
+set @price = @machineCost + @materialCost* @val;
+end
+// delimiter ;
+

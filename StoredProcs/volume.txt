@@ -1,0 +1,10 @@
+DELIMITER //
+drop procedure qwerty//
+CREATE PROCEDURE qwerty(in id varchar(5), out vol int) 
+BEGIN
+set @h =(select maxHeight  from scheduler_ordermodel where scheduler_ordermodel.id=id);
+set @w =(select maxWidth  from scheduler_ordermodel where scheduler_ordermodel.id=id);
+set @l =(select maxLength  from scheduler_ordermodel where scheduler_ordermodel.id=id);
+set vol = @h*@w*@l;
+END//	
+delimiter ;
